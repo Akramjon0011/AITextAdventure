@@ -6,6 +6,18 @@ UzbekNews AI is a Flask-based news platform specifically designed for Uzbek audi
 
 Preferred communication style: Simple, everyday language.
 
+# Recent Changes (Migration to Replit)
+
+- **Date**: August 12, 2025
+- **Migration Status**: Successfully completed migration from Replit Agent to Replit environment
+- **Key Changes Made**:
+  - Fixed service initialization to handle missing API keys gracefully
+  - Updated all Gemini and Telegram service methods to check availability before making API calls
+  - Application now runs without errors even when external API keys are not provided
+  - Default admin user created automatically (username: admin, password: admin123)
+  - Database configuration updated for Replit environment compatibility
+  - All critical import and initialization issues resolved
+
 # System Architecture
 
 ## Core Framework

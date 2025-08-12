@@ -1,0 +1,322 @@
+🇦 🇰 🇷 🇦 🇲, [12.08.2025 22:20]
+# 🔧 XATOLARNI TUZATISH - Debug va Fix Promptlari
+
+---
+
+## 🚨 UMUMIY XATOLARNI TUZATISH PROMPTS
+
+### 1. IMPORT XATOLIKLARI
+XATO: ModuleNotFoundError yoki ImportError
+
+FIX PROMPT:
+"Fix all import errors in the project. Check and correct:
+1. All __init__.py files are properly created
+2. Import statements use correct module paths  
+3. Requirements.txt has all needed dependencies
+4. Circular imports are resolved
+5. Python path issues are fixed
+
+Show the corrected import structure for all files."
+### 2. DATABASE XATOLIKLARI
+XATO: SQLAlchemy errors, table creation issues
+
+FIX PROMPT:
+"Fix all database-related errors:
+1. Correct SQLAlchemy model definitions
+2. Fix database initialization in app.py
+3. Ensure proper foreign key relationships
+4. Add database migration handling
+5. Fix any table creation issues
+6. Add proper database connection error handling
+
+Create working database setup with sample data."
+### 3. FLASK ROUTING XATOLIKLARI
+XATO: 404 errors, route not found
+
+FIX PROMPT:
+"Fix all Flask routing issues:
+1. Check all route definitions are correct
+2. Fix URL patterns and parameters
+3. Ensure template files exist in correct paths
+4. Fix static file serving
+5. Add proper error handling for 404/500
+6. Correct blueprint registration if used
+
+Test all routes and ensure they work properly."
+### 4. TEMPLATE XATOLIKLARI
+XATO: TemplateNotFound, Jinja2 errors
+
+FIX PROMPT:
+"Fix all template-related errors:
+1. Ensure all HTML templates exist in templates/ folder
+2. Fix template inheritance and extends
+3. Correct all Jinja2 syntax errors
+4. Fix template variable passing from routes
+5. Add missing template files
+6. Fix static file links in templates
+
+Make sure all pages render without errors."
+---
+
+## ⚙️ MAXSUS XATOLAR UCHUN PROMPTLAR
+
+### 5. GEMINI API XATOLIKLARI
+XATO: API connection failed, authentication errors
+
+FIX PROMPT:
+"Fix Gemini API integration issues:
+
+1. AUTHENTICATION:
+   - Verify API key is correct in .env
+   - Check API key has proper permissions
+   - Add proper error handling for invalid keys
+
+2. API CALLS:
+   - Fix request format and parameters
+   - Add retry mechanism for failed requests
+   - Handle rate limiting properly
+   - Add timeout handling
+
+3. CONTENT GENERATION:
+   - Fix prompt formatting for Uzbek content
+   - Add input validation
+   - Handle empty or invalid responses
+   - Add fallback content mechanism
+
+4. ERROR HANDLING:
+   - Add try-catch blocks
+   - Log API errors properly
+   - Return user-friendly error messages
+
+Test API connection and content generation."
+### 6. TELEGRAM BOT XATOLIKLARI
+XATO: Telegram API errors, bot not responding
+
+FIX PROMPT:
+"Fix all Telegram bot integration issues:
+
+1. BOT SETUP:
+   - Verify bot token is correct
+   - Check bot permissions in channel
+   - Ensure channel ID format is correct (@channel_name)
+
+2. MESSAGE SENDING:
+   - Fix message formatting issues
+   - Handle message length limits
+   - Add proper Markdown/HTML formatting
+   - Fix image/media sending
+
+3. ERROR HANDLING:
+   - Add proper exception handling
+   - Handle network timeouts
+   - Add retry mechanism for failed sends
+   - Log telegram errors
+
+4. ASYNC ISSUES:
+   - Fix async/await syntax
+   - Handle asyncio properly
+   - Add proper event loop management
+
+Make telegram posting work reliably."
+### 7. ADMIN PANEL XATOLIKLARI
+`
+XATO: Admin login failed, dashboard not loading
+
+FIX PROMPT:
+"Fix admin panel authentication and functionality:
+
+1. AUTHENTICATION:
+   - Fix Flask-Login setup
+   - Correct password hashing/verification
+   - Add proper session management
+   - Fix login/logout functionality
+
+2. ADMIN ROUTES:
+   - Add @login_required decorators
+   - Fix admin dashboard routes
+   - Ensure admin templates exist
+   - Add proper permission checks
+
+3. FORMS:
+   - Fix WTForms integration
+   - Add CSRF protection
+   - Handle form validation errors
+   - Fix form submission handling
+
+4. UI ISSUES:
+   - Fix Bootstrap CSS/JS loading
+   - Correct template inheritance
+   - Add responsive design fixes
+   - Fix JavaScript functionality
+
+🇦 🇰 🇷 🇦 🇲, [12.08.2025 22:20]
+Create fully working admin panel with all features."
+
+---
+
+## 🛠️ DEBUGGING PROMPTS
+
+### **8. DEBUG MODE FAOLLASH**
+PROMPT:
+"Add comprehensive debugging to the Flask application:
+
+1. Enable Flask debug mode
+2. Add detailed logging to all functions
+3. Create error logging to files
+4. Add print statements for troubleshooting
+5. Show detailed error pages
+6. Add database query logging
+7. Log all API requests/responses
+8. Add performance monitoring
+
+Make debugging easy to identify issues."
+
+### **9. STEP-BY-STEP TESTING**
+PROMPT:
+"Create a comprehensive testing checklist and fix any issues found:
+
+TEST CHECKLIST:
+1. ✅ Flask app starts without errors
+2. ✅ Database tables are created
+3. ✅ Homepage loads properly
+4. ✅ Admin login works
+5. ✅ AI content generation works
+6. ✅ Telegram posting works
+7. ✅ All routes return 200 status
+8. ✅ Static files load correctly
+9. ✅ Forms work properly
+10. ✅ No console errors
+
+Fix any failing tests and provide working code."
+
+---
+
+## 🚑 TUGALLASH PROMPTLARI
+
+### **10. YAKUNIY TUZATISH**
+CRITICAL FIX PROMPT:
+"This is the final debugging phase. Fix ALL remaining issues:
+
+REQUIREMENTS:
+1. Flask app must start without any errors
+2. All pages must load properly (/, /admin, etc.)
+3. Gemini API must generate Uzbek content successfully
+4. Telegram bot must post messages successfully
+5. Admin panel must be fully functional
+6. Database must work without errors
+7. All imports must work correctly
+8. No Python syntax or runtime errors
+
+DELIVERABLES:
+- Working app.py that starts successfully
+- All required templates that render properly
+- Functional database with models
+- Working API integrations
+- Error-free admin panel
+- Complete requirements.txt
+- Proper .env setup instructions
+
+Test everything and ensure 100% functionality."
+
+### **11. FINAL PRODUCTION READY**
+PRODUCTION PROMPT:
+"Make the application production-ready and error-free:
+
+PRODUCTION CHECKLIST:
+1. Remove all debug print statements
+2. Add proper error handling everywhere
+3. Optimize database queries
+4. Add input validation and sanitization
+5. Ensure security best practices
+6. Add proper logging instead of prints
+7. Optimize static file loading
+8. Add configuration for production environment
+9. Test all functionality thoroughly
+10. Add startup instructions
+
+Provide clean, professional, production-ready code."
+
+---
+
+## 🔄 XATOLARNI BOSQICHMA-BOSQICH TUZATISH
+
+### **BOSQICH 1: Asosiy xatolarni tuzatish**
+"Fix basic setup errors first:
+1. Check all files are created correctly
+2. Fix import errors
+3. Ensure Flask app starts
+4. Fix database connection
+Use this prompt first before other fixes."
+
+### **BOSQICH 2: API xatolarni tuzatish**
+"Fix API integration errors:
+1. Test Gemini API connection
+2. Fix content generation
+3. Test Telegram bot posting
+Use after basic setup is working."
+
+### **BOSQICH 3: Frontend xatolarni tuzatish**
+"Fix frontend and template errors:
+1. Fix all template rendering
+2. Fix CSS/JS loading
+3. Fix responsive design
+4. Test all pages
+Use after backend is working."
+
+### **BOSQICH 4: Admin panel tuzatish**
+"Fix admin panel completely:
+1. Fix authentication
+2. Fix all admin functions
+3. Test content management
+4. Fix UI/UX issues
+Use as final step."
+
+---
+
+## 🎯 MAXSUS XATOLAR UCHUN
+
+### **Agar database yaratilmasa:**
+"Database is not creating properly. Fix database initialization:
+1. Check SQLAlchemy setup
+2. Fix model definitions
+3. Add db.create_all() in correct place
+4. Fix database URL
+5. Add error hanAgar sahifalar ochilmasa:"
+
+### **Agar sahifalar ochilmasa:**
+"Pages are not loading. Fix routing and templates:
+1. Check all route definitions
+2. Ensure templates exist
+3. Fix template paths
+4. Add missing statiAgar AI ishlamasa:eration"
+
+### **Agar AI ishlamasa:**
+"AI content generation is not working. Fix Gemini integration:
+1. Verify API key is valid
+2. Check internet connection
+3. Fix API request format
+4. Add proper error handling
+5. Test with simple prompt first"
+`
+
+---
+
+## 📞 FINAL EMERGENCY PROMPT
+
+🇦 🇰 🇷 🇦 🇲, [12.08.2025 22:20]
+EMERGENCY FIX - USE THIS IF NOTHING WORKS:
+
+"CRITICAL: The project is not working. Start fresh debugging:
+
+1. Show me the exact error messages
+2. Check each file exists and has content
+3. Verify all imports work
+4. Test database connection
+5. Test API connections separately
+6. Create minimal working version first
+7. Add features one by one
+8. Test after each addition
+
+Priority: GET BASIC FLASK APP RUNNING FIRST, then add features step by step.
+
+Provide working code for each component individually."
