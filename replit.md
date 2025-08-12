@@ -14,9 +14,15 @@ Preferred communication style: Simple, everyday language.
   - Fixed service initialization to handle missing API keys gracefully
   - Updated all Gemini and Telegram service methods to check availability before making API calls
   - Application now runs without errors even when external API keys are not provided
-  - Default admin user created automatically (username: admin, password: admin123)
+  - Default admin user created automatically (username: Akramjon, password: Gisobot201415)
   - Database configuration updated for Replit environment compatibility
   - All critical import and initialization issues resolved
+  - Created all missing admin templates (posts.html, edit_post.html, ai_generator.html, telegram.html)
+  - Fixed all 500 internal server errors
+  - Configured Telegram bot integration with provided credentials
+    - Bot Token: Securely stored in environment variables
+    - Channel ID: -1002771829304 (https://t.me/UzbekNewsAI)
+    - Telegram service now fully operational for automated news posting
 
 # System Architecture
 
