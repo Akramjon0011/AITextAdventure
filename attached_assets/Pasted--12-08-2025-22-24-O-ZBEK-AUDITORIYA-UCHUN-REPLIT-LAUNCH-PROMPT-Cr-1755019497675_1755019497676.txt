@@ -1,0 +1,251 @@
+🇦 🇰 🇷 🇦 🇲, [12.08.2025 22:24]
+# 🇺🇿 O'ZBEK AUDITORIYA UCHUN REPLIT LAUNCH PROMPT
+
+---
+
+Create a professional AI-powered Uzbek news platform with Flask, Gemini 1.5 Flash API, and Telegram Bot integration specifically designed for Uzbek audience.
+
+## PROJECT REQUIREMENTS:
+
+STACK: Flask + Gemini API + Telegram Bot + SQLAlchemy + Bootstrap 5
+TARGET AUDIENCE: Uzbek readers (Uzbek/Russian languages)
+CONTENT FOCUS: Uzbekistan news, Central Asia, technology, sports, politics
+
+CREATE THIS EXACT FILE STRUCTURE:
+├── app.py
+├── config.py  
+├── requirements.txt
+├── .env
+├── models/
+│   ├── __init__.py
+│   ├── database.py
+│   ├── user.py
+│   └── post.py
+├── services/
+│   ├── __init__.py
+│   ├── gemini_service.py
+│   └── telegram_service.py
+├── templates/
+│   ├── base.html
+│   ├── index.html
+│   ├── post.html
+│   └── admin/
+│       ├── dashboard.html
+│       └── login.html
+├── static/
+│   ├── css/
+│   │   └── style.css
+│   ├── js/
+│   │   └── main.js
+│   └── images/
+└── utils/
+    ├── __init__.py
+    └── helpers.py
+## REQUIREMENTS.TXT CONTENTS:
+Flask==2.3.3
+Flask-SQLAlchemy==3.1.1
+Flask-Login==0.6.3
+Flask-WTF==1.2.1
+google-generativeai==0.3.0
+python-telegram-bot==20.7
+python-dotenv==1.0.0
+requests==2.31.0
+python-slugify==8.0.1
+bcrypt==4.1.2
+gunicorn==21.2.0
+## .ENV TEMPLATE:
+GEMINI_API_KEY=your_key_here
+TELEGRAM_BOT_TOKEN=your_token_here
+TELEGRAM_CHANNEL_ID=@your_channel
+SECRET_KEY=your_secret_key_here
+DATABASE_URL=sqlite:///uzbek_news.db
+SITE_NAME=UzbekNews AI
+SITE_DESCRIPTION=O'zbekiston va Markaziy Osiyodagi eng so'nggi yangiliklarni AI yordamida taqdim etamiz
+## UZBEK-SPECIFIC FEATURES TO IMPLEMENT:
+
+1. Flask App (app.py):
+   - Multi-language support (Uzbek Latin, Cyrillic, Russian)
+   - Timezone: Asia/Tashkent
+   - Currency: UZS som
+   - Local date/time formatting
+   - Admin panel in Uzbek language
+
+2. AI Content Generation (services/gemini_service.py):
+   
+   UZBEK CONTENT PROMPTS:
+  
+   UZBEK_NEWS_PROMPT = """
+   O'zbek auditoriya uchun {topic} mavzusida yangilik maqolasi yozing.
+   
+   TALABLAR:
+   - Tili: O'zbek tili (lotin yozuvi)
+   - Hajmi: 600-1000 so'z
+   - Uslubi: Rasmiy yangilik uslubi
+   - Mazmuni: O'zbekiston va Markaziy Osiyoga tegishli
+   - SEO: Kalit so'zlar: {keywords}
+   
+   STRUKTURA:
+   - Qiziqarli sarlavha (45-55 belgi)
+   - Kirish qismi (lead paragraph)
+   - Asosiy mazmun (3-4 paragraf)
+   - Xulosa va kelgusi rejalar
+   
+   O'zbek mentaliteti va madaniyatini hisobga oling.
+   """
+   
+   TELEGRAM_UZ_PROMPT = """
+   {topic} haqida qisqa Telegram posti yozing.
+   
+   FORMAT:
+   - 150-250 so'z
+   - O'zbek tilida
+   - 2-3 emoji
+   - #uzbekistan #yangiliklar kabi hashtag
+   - "To'liq maqolani o'qish uchun: [link]"
+   """
+   
+3. Categories for Uzbek Audience:
+  
+   UZBEK_CATEGORIES = [
+       'O\'zbekiston yangiliklar',
+       'Texnologiya', 
+       'Iqtisodiyot',
+       'Sport',
+       'Madaniyat',
+       'Ta\'lim',
+       'Sog\'liqni saqlash',
+       'Markaziy Osiyodagi yangiliklar',
+       'Jahon yangiliklar'
+   ]
+   
+4. Telegram Integration (services/telegram_service.py):
+   - Uzbek language message formatting
+   - Local hashtags: #uzbekistan #toshkent #samarqand
+   - Time zone conversion (UTC+5)
+   - Uzbek emoji and symbols integration
+
+5. Database Schema (Uzbek-specific fields):
+  
+   # Posts table
+   posts = {
+       'id': Integer,
+       'title_uz': String(200),      # O'zbek sarlavha
+       'title_ru': String(200),      # Rus sarlavha  
+       'content_uz': Text,           # O'zbek mazmuni
+       'content_ru': Text,           # Rus mazmuni
+       'telegram_content_uz': Text,  # Telegram O'zbek
+       'telegram_content_ru': Text,  # Telegram Rus
+       'meta_title_uz': String(60),
+       'meta_description_uz': String(155),
+       'category': String(50),
+       'region': String(50),         # Toshkent, Samarqand, etc.
+       'created_at': DateTime(timezone=True),
+       'published': Boolean,
+       'views': Integer,
+       'telegram_views': Integer
+   }
+   
+6. Frontend Templates (Uzbek Design):
+
+🇦 🇰 🇷 🇦 🇲, [12.08.2025 22:24]
+BASE.HTML features:
+   - Language switcher (O'zbek/Русский)
+   - Uzbek flag colors (blue, white, green)
+   - Local navigation: Bosh sahifa, Yangiliklar, Sport, etc.
+   - Prayer times widget (optional)
+   - Weather widget for Tashkent
+   - Currency converter (USD/EUR to UZS)
+
+   HOMEPAGE (index.html):
+   - Hero section: "Eng so'nggi yangiliklar"
+   - Categories: O'zbekiston, Jahon, Sport, Texnologiya
+   - Regional news sections
+   - Popular articles: "Ommabop maqolalar"
+   - Newsletter: "Yangiliklardan xabardor bo'ling"
+
+7. Admin Panel (Uzbek Interface):
+  
+   Dashboard labels:
+   - "Boshqaruv paneli" (Dashboard)
+   - "Maqolalar" (Articles) 
+   - "Yangi maqola" (New Article)
+   - "Kategoriyalar" (Categories)
+   - "Statistika" (Statistics)
+   - "Foydalanuvchilar" (Users)
+   - "Sozlamalar" (Settings)
+   
+## UZBEK CONTENT STRATEGY:
+
+Popular Topics for AI Generation:
+- O'zbekistondagi iqtisodiy yangiliklar
+- Texnologiya va start-up'lar
+- Ta'lim tizimidagi o'zgarishlar  
+- Sport yangiliklar (futbol, kurash)
+- Madaniy tadbirlar va bayramlar
+- Markaziy Osiyodagi siyosiy yangiliklar
+- Qishloq xo'jalik va eksport
+- Turizm rivojlanishi
+
+SEO Keywords for Uzbek Audience:
+- "o'zbekiston yangiliklar"
+- "toshkent shahar yangiliklar"
+- "uzbekistan news"
+- "markaziy osiy" 
+- "iqtisodiyot uzbekistan"
+- "sport yangiliklar uzbekistan"
+
+Telegram Channel Strategy:
+- Channel name: @UzbekNewsAI
+- Posting time: 9:00, 13:00, 18:00 (Tashkent time)
+- Hashtags: #UzbekNews #Toshkent #Uzbekistan
+- Emoji usage: 🇺🇿 🏛️ 📈 ⚽ 🎯
+
+## LOCALIZATION FEATURES:
+
+1. Time & Date:
+   - Timezone: Asia/Tashkent (UTC+5)
+   - Date format: 25-dekabr, 2024-yil
+   - Time format: 24-hour (14:30)
+
+2. Currency:
+   - Default: UZS (O'zbek so'm)
+   - Conversion rates display
+   - Price formatting: 1,500,000 so'm
+
+3. Cultural Considerations:
+   - Respectful tone for religious content
+   - Family-friendly content only
+   - Cultural holidays awareness
+   - Regional dialect recognition
+
+4. Social Media Integration:
+   - Popular platforms: Telegram, Instagram, Facebook
+   - Local influencer mentions
+   - Government official accounts linking
+
+## ROUTES TO CREATE:
+# Public routes
+'/' - Bosh sahifa
+'/yangilik/<slug>' - Maqola sahifasi  
+'/kategoriya/<name>' - Kategoriya sahifasi
+'/viloyat/<region>' - Mintaqa yangiliklari
+'/qidiruv' - Qidiruv sahifasi
+
+# Admin routes  
+'/admin/' - Boshqaruv paneli
+'/admin/maqola-yaratish' - AI content generator
+'/admin/maqolalar' - Maqolalar ro'yxati
+'/admin/sozlamalar' - Sozlamalar
+## SUCCESS CRITERIA:
+- Uzbek tilida to'liq ishlaydigan news platform
+- AI content generation in Uzbek language
+- Telegram channel auto-posting in Uzbek
+- Multi-language support (Uzbek/Russian)
+- Local timezone and cultural adaptation
+- Mobile-responsive design
+- SEO-optimized for Uzbek search terms
+- Admin panel in Uzbek language
+
+IMPORTANT: All AI-generated content should be culturally appropriate for Uzbek society, family-friendly, and respectful of local customs and traditions.
+
+Please create all files with complete, production-ready code with Uzbek language support and cultural localization.
