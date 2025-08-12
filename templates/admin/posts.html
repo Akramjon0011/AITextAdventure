@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+
+{% block title %}Maqolalar - {{ config.SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <!-- Admin Sidebar -->
+            <div class="list-group">
+                <a href="{{ url_for('admin_dashboard') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="{{ url_for('admin_posts') }}" class="list-group-item list-group-item-action active">
+                    <i class="fas fa-newspaper"></i> Maqolalar
+                </a>
+                <a href="{{ url_for('admin_create_post') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-plus"></i> Yangi maqola
+                </a>
+                <a href="{{ url_for('admin_ai_generator') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-robot"></i> AI Generator
+                </a>
+                <a href="{{ url_for('admin_telegram') }}" class="list-group-item list-group-item-action">
+                    <i class="fab fa-telegram"></i> Telegram
+                </a>
+            </div>
+        </div>
+        
+        <div class="col-md-10">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1><i class="fas fa-newspaper"></i> Maqolalar</h1>
+                <a href="{{ url_for('admin_create_post') }}" class="btn btn-uzbek-blue">
+                    <i class="fas fa-plus"></i> Yangi maqola
+                </a>
+            </div>
+
+            {% if posts and posts.items %}
+            <div class="card">
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Sarlavha</th>
+                                    <th>Kategoriya</th>
+                                    <th>Holati</th>
+                                    <th>Ko'rishlar</th>
+                                    <th>Sana</th>
+                                    <th>Amallar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for post in posts.items %}
+                                <tr>
+                                    <td>
+                                        <strong>{{ post.title_uz[:50] }}{% if post.title_uz|length > 50 %}...{% endif %}</strong>
+                                        {% if post.featured %}
+                                        <span class="badge bg-warning ms-2">Tanlangan</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ post.category }}</td>
+                                    <td>
+                                        {% if post.published %}
+                                        <span class="badge bg-success">Nashr qilingan</span>
+                                        {% else %}
+                                        <span class="badge bg-secondary">Qoralama</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <i class="fas fa-eye"></i> {{ post.views }}
+                                        {% if post.telegram_posted %}
+                                        <br><i class="fab fa-telegram"></i> {{ post.telegram_views }}
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ post.created_at.strftime('%d.%m.%Y') }}</td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="{{ url_for('post_detail', slug=post.slug) }}" 
+                                               class="btn btn-outline-primary" target="_blank">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a href="{{ url_for('admin_edit_post', id=post.id) }}" 
+                                               class="btn btn-outline-warning">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <button class="btn btn-outline-danger" 
+                                                    onclick="deletePost({{ post.id }})">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            {% if posts.pages > 1 %}
+            <nav aria-label="Posts pagination" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    {% if posts.has_prev %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('admin_posts', page=posts.prev_num) }}">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+                    
+                    {% for page_num in posts.iter_pages() %}
+                    {% if page_num %}
+                    {% if page_num != posts.page %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('admin_posts', page=page_num) }}">{{ page_num }}</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item active">
+                        <span class="page-link">{{ page_num }}</span>
+                    </li>
+                    {% endif %}
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">…</span>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+                    
+                    {% if posts.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('admin_posts', page=posts.next_num) }}">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+            
+            {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-newspaper fa-3x text-muted mb-3"></i>
+                <h4>Hali maqola yo'q</h4>
+                <p class="text-muted">Birinchi maqolani yaratish uchun tugmani bosing</p>
+                <a href="{{ url_for('admin_create_post') }}" class="btn btn-uzbek-blue">
+                    <i class="fas fa-plus"></i> Yangi maqola
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+function deletePost(postId) {
+    if (confirm('Bu maqolani o\'chirmoqchimisiz?')) {
+        fetch(`/admin/post/${postId}/delete`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Xatolik yuz berdi');
+            }
+        })
+        .catch(error => {
+            alert('Xatolik yuz berdi');
+        });
+    }
+}
+</script>
+{% endblock %}

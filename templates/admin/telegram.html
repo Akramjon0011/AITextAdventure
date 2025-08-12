@@ -1,0 +1,227 @@
+{% extends "base.html" %}
+
+{% block title %}Telegram Boshqaruvi - {{ config.SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <!-- Admin Sidebar -->
+            <div class="list-group">
+                <a href="{{ url_for('admin_dashboard') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="{{ url_for('admin_posts') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-newspaper"></i> Maqolalar
+                </a>
+                <a href="{{ url_for('admin_create_post') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-plus"></i> Yangi maqola
+                </a>
+                <a href="{{ url_for('admin_ai_generator') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-robot"></i> AI Generator
+                </a>
+                <a href="{{ url_for('admin_telegram') }}" class="list-group-item list-group-item-action active">
+                    <i class="fab fa-telegram"></i> Telegram
+                </a>
+            </div>
+        </div>
+        
+        <div class="col-md-10">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1><i class="fab fa-telegram"></i> Telegram Boshqaruvi</h1>
+            </div>
+
+            <div class="row">
+                <!-- Telegram Status -->
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5><i class="fas fa-info-circle"></i> Telegram Status</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="telegramStatus">
+                                <div class="d-flex align-items-center mb-3">
+                                    <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                    <span>Tekshirilmoqda...</span>
+                                </div>
+                            </div>
+                            
+                            <div class="alert alert-info">
+                                <i class="fas fa-lightbulb"></i>
+                                <strong>Eslatma:</strong> Telegram bot ishlashi uchun 
+                                <code>TELEGRAM_BOT_TOKEN</code> va <code>TELEGRAM_CHANNEL_ID</code> 
+                                muhit o'zgaruvchilari kerak.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Test Message -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-paper-plane"></i> Test Xabar</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">Test xabari</label>
+                                <textarea id="testMessage" class="form-control" rows="4" 
+                                          placeholder="Telegram kanalga test xabari...">🤖 UzbekNews AI test xabari
+
+Bu test xabari UzbekNews AI tizimidan yuborildi.
+
+📅 {{ moment().strftime('%d.%m.%Y %H:%M') }}
+🔗 {{ config.SITE_NAME }}</textarea>
+                            </div>
+                            
+                            <button id="sendTestBtn" class="btn btn-uzbek-blue">
+                                <i class="fas fa-paper-plane"></i> Test xabari yuborish
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recent Telegram Posts -->
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-list"></i> Telegram'ga yuborilgan maqolalar</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="telegramPosts">
+                                <div class="text-center py-4">
+                                    <div class="spinner-border" role="status"></div>
+                                    <p class="mt-2">Yuklanmoqda...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Telegram Settings -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-cog"></i> Telegram Sozlamalari</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6>Bot Token</h6>
+                                    <div class="input-group mb-3">
+                                        <input type="password" class="form-control" 
+                                               placeholder="Bot token o'rnatilmagan" readonly>
+                                        <button class="btn btn-outline-secondary" type="button">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <h6>Kanal ID</h6>
+                                    <div class="input-group mb-3">
+                                        <input type="text" class="form-control" 
+                                               placeholder="Kanal ID o'rnatilmagan" readonly>
+                                        <button class="btn btn-outline-secondary" type="button">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="alert alert-warning">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <strong>Muhim:</strong> Telegram sozlamalarini o'zgartirish uchun 
+                                muhit o'zgaruvchilarini (.env fayl) tahrirlang va serverni qayta ishga tushiring.
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6>Bot yaratish qo'llanmasi:</h6>
+                                    <ol class="small">
+                                        <li>Telegram'da @BotFather'ga yozing</li>
+                                        <li>/newbot buyrug'ini yuboring</li>
+                                        <li>Bot nomini kiriting</li>
+                                        <li>Bot username'ini kiriting</li>
+                                        <li>Olingan tokenni .env fayliga qo'shing</li>
+                                    </ol>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <h6>Kanal sozlash qo'llanmasi:</h6>
+                                    <ol class="small">
+                                        <li>Telegram kanalini yarating</li>
+                                        <li>Botni kanalga admin qilib qo'shing</li>
+                                        <li>Kanal username'ini (@kanal_nomi) .env fayliga qo'shing</li>
+                                        <li>Yoki kanal ID'sini (-100123456789) ishlatishingiz mumkin</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    checkTelegramStatus();
+    loadRecentPosts();
+});
+
+function checkTelegramStatus() {
+    const statusEl = document.getElementById('telegramStatus');
+    
+    // Simple status check
+    statusEl.innerHTML = `
+        <div class="d-flex align-items-center mb-2">
+            <i class="fas fa-info-circle text-info me-2"></i>
+            <span><strong>Telegram Bot:</strong> TELEGRAM_BOT_TOKEN kerak</span>
+        </div>
+        <div class="d-flex align-items-center">
+            <i class="fas fa-info-circle text-info me-2"></i>
+            <span><strong>Kanal:</strong> TELEGRAM_CHANNEL_ID kerak</span>
+        </div>
+    `;
+}
+
+function loadRecentPosts() {
+    // Mock data for now - in real implementation, this would fetch from server
+    const postsEl = document.getElementById('telegramPosts');
+    
+    setTimeout(() => {
+        postsEl.innerHTML = `
+            <div class="text-center text-muted">
+                <i class="fab fa-telegram fa-3x mb-3"></i>
+                <p>Hali Telegram'ga maqola yuborilmagan</p>
+                <small>Maqolalar nashr qilinganda avtomatik Telegram'ga yuboriladi</small>
+            </div>
+        `;
+    }, 1000);
+}
+
+document.getElementById('sendTestBtn').addEventListener('click', function() {
+    const message = document.getElementById('testMessage').value.trim();
+    
+    if (!message) {
+        alert('Xabar matnini kiriting!');
+        return;
+    }
+    
+    // Disable button
+    this.disabled = true;
+    this.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Yuborilmoqda...';
+    
+    // In a real implementation, this would send to server
+    setTimeout(() => {
+        alert('Test xabari yuborildi! (Demo rejim)');
+        
+        // Re-enable button
+        this.disabled = false;
+        this.innerHTML = '<i class="fas fa-paper-plane"></i> Test xabari yuborish';
+    }, 2000);
+});
+</script>
+{% endblock %}

@@ -1,0 +1,257 @@
+{% extends "base.html" %}
+
+{% block title %}AI Generator - {{ config.SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <!-- Admin Sidebar -->
+            <div class="list-group">
+                <a href="{{ url_for('admin_dashboard') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="{{ url_for('admin_posts') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-newspaper"></i> Maqolalar
+                </a>
+                <a href="{{ url_for('admin_create_post') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-plus"></i> Yangi maqola
+                </a>
+                <a href="{{ url_for('admin_ai_generator') }}" class="list-group-item list-group-item-action active">
+                    <i class="fas fa-robot"></i> AI Generator
+                </a>
+                <a href="{{ url_for('admin_telegram') }}" class="list-group-item list-group-item-action">
+                    <i class="fab fa-telegram"></i> Telegram
+                </a>
+            </div>
+        </div>
+        
+        <div class="col-md-10">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1><i class="fas fa-robot"></i> AI Content Generator</h1>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-wand-magic-sparkles"></i> Kontent yaratish</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">Mavzu <span class="text-danger">*</span></label>
+                                <input type="text" id="topic" class="form-control" 
+                                       placeholder="Masalan: O'zbekistondagi yangi texnologiyalar">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Kalit so'zlar</label>
+                                <input type="text" id="keywords" class="form-control" 
+                                       placeholder="texnologiya, innovatsiya, O'zbekiston">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Kategoriya</label>
+                                <select id="category" class="form-select">
+                                    <option value="">Kategoriyani tanlang</option>
+                                    {% for category in config.UZBEK_CATEGORIES %}
+                                    <option value="{{ category }}">{{ category }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            
+                            <div class="d-grid">
+                                <button id="generateBtn" class="btn btn-uzbek-blue btn-lg">
+                                    <i class="fas fa-magic"></i> Kontent yaratish
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Status Card -->
+                    <div class="card mt-4">
+                        <div class="card-header">
+                            <h6><i class="fas fa-info-circle"></i> AI Status</h6>
+                        </div>
+                        <div class="card-body">
+                            <div id="geminiStatus" class="d-flex align-items-center">
+                                <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                <span>Tekshirilmoqda...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5><i class="fas fa-eye"></i> Natija</h5>
+                            <button id="copyBtn" class="btn btn-outline-primary btn-sm" style="display: none;">
+                                <i class="fas fa-copy"></i> Nusxalash
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div id="loading" style="display: none;" class="text-center py-5">
+                                <div class="spinner-border text-primary" role="status"></div>
+                                <p class="mt-2">AI kontent yaratyapti...</p>
+                            </div>
+                            
+                            <div id="result" style="display: none;">
+                                <div class="mb-3">
+                                    <label class="form-label"><strong>Sarlavha (O'zbek)</strong></label>
+                                    <input type="text" id="resultTitleUz" class="form-control" readonly>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label"><strong>Mazmun (O'zbek)</strong></label>
+                                    <textarea id="resultContentUz" class="form-control" rows="8" readonly></textarea>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label"><strong>Sarlavha (Rus)</strong></label>
+                                    <input type="text" id="resultTitleRu" class="form-control" readonly>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label"><strong>Mazmun (Rus)</strong></label>
+                                    <textarea id="resultContentRu" class="form-control" rows="8" readonly></textarea>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label"><strong>SEO Meta</strong></label>
+                                    <input type="text" id="resultMeta" class="form-control" readonly>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label"><strong>Kalit so'zlar</strong></label>
+                                    <input type="text" id="resultKeywords" class="form-control" readonly>
+                                </div>
+                                
+                                <div class="d-grid">
+                                    <button id="createPostBtn" class="btn btn-success btn-lg">
+                                        <i class="fas fa-plus"></i> Maqola sifatida saqlash
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div id="error" style="display: none;" class="alert alert-danger">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <span id="errorMsg"></span>
+                            </div>
+                            
+                            <div id="empty" class="text-center py-5 text-muted">
+                                <i class="fas fa-robot fa-3x mb-3"></i>
+                                <p>AI yordamida kontent yaratish uchun chap tarafdagi formani to'ldiring</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Check AI status on page load
+document.addEventListener('DOMContentLoaded', function() {
+    checkGeminiStatus();
+});
+
+function checkGeminiStatus() {
+    const statusEl = document.getElementById('geminiStatus');
+    
+    // Simple check - if we can access this page, basic Flask is working
+    // For now, show a basic status
+    statusEl.innerHTML = `
+        <i class="fas fa-info-circle text-info me-2"></i>
+        <span>AI kontent generatori tayyor. GEMINI_API_KEY kerak.</span>
+    `;
+}
+
+document.getElementById('generateBtn').addEventListener('click', function() {
+    const topic = document.getElementById('topic').value.trim();
+    const keywords = document.getElementById('keywords').value.trim();
+    
+    if (!topic) {
+        alert('Mavzu kiritilmagan!');
+        return;
+    }
+    
+    // Show loading
+    document.getElementById('loading').style.display = 'block';
+    document.getElementById('result').style.display = 'none';
+    document.getElementById('error').style.display = 'none';
+    document.getElementById('empty').style.display = 'none';
+    
+    // Disable button
+    this.disabled = true;
+    this.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Yaratilmoqda...';
+    
+    // Make API request
+    fetch('/admin/generate-content', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            topic: topic,
+            keywords: keywords
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('loading').style.display = 'none';
+        
+        if (data.error) {
+            document.getElementById('error').style.display = 'block';
+            document.getElementById('errorMsg').textContent = data.error;
+        } else {
+            // Populate results
+            document.getElementById('resultTitleUz').value = data.title_uz || '';
+            document.getElementById('resultContentUz').value = data.content_uz || '';
+            document.getElementById('resultTitleRu').value = data.title_ru || '';
+            document.getElementById('resultContentRu').value = data.content_ru || '';
+            document.getElementById('resultMeta').value = data.meta_title || '';
+            document.getElementById('resultKeywords').value = data.keywords || '';
+            
+            document.getElementById('result').style.display = 'block';
+            document.getElementById('copyBtn').style.display = 'block';
+        }
+    })
+    .catch(error => {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('error').style.display = 'block';
+        document.getElementById('errorMsg').textContent = 'Xatolik yuz berdi: ' + error.message;
+    })
+    .finally(() => {
+        // Re-enable button
+        this.disabled = false;
+        this.innerHTML = '<i class="fas fa-magic"></i> Kontent yaratish';
+    });
+});
+
+document.getElementById('copyBtn').addEventListener('click', function() {
+    const content = document.getElementById('resultContentUz').value;
+    navigator.clipboard.writeText(content).then(() => {
+        this.innerHTML = '<i class="fas fa-check"></i> Nusxalandi';
+        setTimeout(() => {
+            this.innerHTML = '<i class="fas fa-copy"></i> Nusxalash';
+        }, 2000);
+    });
+});
+
+document.getElementById('createPostBtn').addEventListener('click', function() {
+    // Redirect to create post with pre-filled data
+    const params = new URLSearchParams({
+        title_uz: document.getElementById('resultTitleUz').value,
+        content_uz: document.getElementById('resultContentUz').value,
+        title_ru: document.getElementById('resultTitleRu').value,
+        content_ru: document.getElementById('resultContentRu').value,
+        keywords: document.getElementById('resultKeywords').value,
+        category: document.getElementById('category').value
+    });
+    
+    window.location.href = '/admin/create?' + params.toString();
+});
+</script>
+{% endblock %}

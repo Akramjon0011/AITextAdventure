@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+
+{% block title %}Maqolani tahrirlash - {{ config.SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <!-- Admin Sidebar -->
+            <div class="list-group">
+                <a href="{{ url_for('admin_dashboard') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="{{ url_for('admin_posts') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-newspaper"></i> Maqolalar
+                </a>
+                <a href="{{ url_for('admin_create_post') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-plus"></i> Yangi maqola
+                </a>
+                <a href="{{ url_for('admin_ai_generator') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-robot"></i> AI Generator
+                </a>
+                <a href="{{ url_for('admin_telegram') }}" class="list-group-item list-group-item-action">
+                    <i class="fab fa-telegram"></i> Telegram
+                </a>
+            </div>
+        </div>
+        
+        <div class="col-md-10">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1><i class="fas fa-edit"></i> Maqolani tahrirlash</h1>
+                <a href="{{ url_for('admin_posts') }}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Orqaga
+                </a>
+            </div>
+
+            <form method="POST" class="needs-validation" novalidate>
+                {{ form.hidden_tag() }}
+                
+                <div class="row">
+                    <div class="col-md-8">
+                        <!-- Uzbek Content -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5><i class="fas fa-language"></i> O'zbek tili</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    {{ form.title_uz.label(class="form-label") }}
+                                    {{ form.title_uz(class="form-control form-control-lg") }}
+                                    {% if form.title_uz.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.title_uz.errors %}
+                                        <small>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="mb-3">
+                                    {{ form.content_uz.label(class="form-label") }}
+                                    {{ form.content_uz(class="form-control", rows="15") }}
+                                    {% if form.content_uz.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.content_uz.errors %}
+                                        <small>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Russian Content -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5><i class="fas fa-language"></i> Rus tili</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    {{ form.title_ru.label(class="form-label") }}
+                                    {{ form.title_ru(class="form-control form-control-lg") }}
+                                </div>
+                                
+                                <div class="mb-3">
+                                    {{ form.content_ru.label(class="form-label") }}
+                                    {{ form.content_ru(class="form-control", rows="15") }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <!-- Publish Settings -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5><i class="fas fa-cog"></i> Sozlamalar</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    {{ form.category.label(class="form-label") }}
+                                    {{ form.category(class="form-select") }}
+                                </div>
+                                
+                                <div class="mb-3">
+                                    {{ form.region.label(class="form-label") }}
+                                    {{ form.region(class="form-select") }}
+                                </div>
+                                
+                                <div class="mb-3">
+                                    {{ form.keywords.label(class="form-label") }}
+                                    {{ form.keywords(class="form-control", placeholder="kalit so'zlar, vergul bilan ajratilgan") }}
+                                </div>
+                                
+                                <div class="form-check mb-2">
+                                    {{ form.published(class="form-check-input") }}
+                                    {{ form.published.label(class="form-check-label") }}
+                                </div>
+                                
+                                <div class="form-check mb-3">
+                                    {{ form.featured(class="form-check-input") }}
+                                    {{ form.featured.label(class="form-check-label") }}
+                                </div>
+                                
+                                <div class="d-grid gap-2">
+                                    {{ form.submit(class="btn btn-uzbek-blue btn-lg") }}
+                                    <a href="{{ url_for('admin_posts') }}" class="btn btn-outline-secondary">Bekor qilish</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Post Info -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h6><i class="fas fa-info-circle"></i> Ma'lumot</h6>
+                            </div>
+                            <div class="card-body">
+                                <p class="mb-2"><strong>Yaratilgan:</strong><br>{{ post.created_at.strftime('%d.%m.%Y %H:%M') }}</p>
+                                <p class="mb-2"><strong>Yangilangan:</strong><br>{{ post.updated_at.strftime('%d.%m.%Y %H:%M') }}</p>
+                                <p class="mb-2"><strong>Ko'rishlar:</strong><br>{{ post.views }}</p>
+                                <p class="mb-0"><strong>Slug:</strong><br><small class="text-muted">{{ post.slug }}</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+// Form validation
+(function() {
+    'use strict';
+    window.addEventListener('load', function() {
+        var forms = document.getElementsByClassName('needs-validation');
+        var validation = Array.prototype.filter.call(forms, function(form) {
+            form.addEventListener('submit', function(event) {
+                if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    }, false);
+})();
+</script>
+{% endblock %}
