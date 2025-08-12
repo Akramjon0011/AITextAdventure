@@ -141,7 +141,10 @@ function initializeTooltips() {
 function initializeSmoothScrolling() {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
-            const target = document.querySelector(this.getAttribute('href'));
+            const href = this.getAttribute('href');
+            if (href === '#' || href === null) return; // Skip empty anchors
+            
+            const target = document.querySelector(href);
             if (target) {
                 e.preventDefault();
                 target.scrollIntoView({

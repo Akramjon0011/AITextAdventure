@@ -153,3 +153,48 @@ class GeminiService:
         except Exception as e:
             logging.error(f"Error summarizing content: {e}")
             return content[:200]
+    
+    def generate_news_content(self, topic, category, region):
+        """Generate comprehensive news content based on topic"""
+        try:
+            prompt = f"""
+            Quyidagi mavzu bo'yicha haqiqiy va dolzarb yangilik maqolasi yarating:
+            
+            Mavzu: {topic}
+            Kategoriya: {category}  
+            Hudud: {region}
+            
+            TALABLAR:
+            - Haqiqiy ma'lumotlarga asoslaning
+            - Professional jurnalistik uslub
+            - O'zbek va rus tillarida
+            - SEO optimizatsiyasi
+            
+            JSON formatda javob bering:
+            {{
+                "title_uz": "Jozibali o'zbek tilidagi sarlavha",
+                "title_ru": "Привлекательный заголовок на русском",  
+                "content_uz": "To'liq o'zbek tilidagi matn (300-400 so'z)",
+                "content_ru": "Полный текст на русском языке",
+                "meta_title": "SEO uchun meta sarlavha",
+                "meta_description": "Qisqa tavsif SEO uchun", 
+                "keywords": "kalit so'zlar, vergul bilan"
+            }}
+            """
+            
+            response = self.client.models.generate_content(
+                model=self.model,
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    response_mime_type="application/json"
+                )
+            )
+            
+            if response.text:
+                import json
+                return json.loads(response.text)
+            return None
+            
+        except Exception as e:
+            logging.error(f"Error generating news content: {e}")
+            return None

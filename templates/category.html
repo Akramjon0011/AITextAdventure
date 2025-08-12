@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}{{ category_name }} - {{ config.SITE_NAME }}{% endblock %}
+
+{% block meta %}
+<meta name="description" content="{{ category_name }} sohasidagi eng so'nggi yangiliklar va tahlillar O'zbekiston bo'yicha.">
+<meta name="keywords" content="{{ category_name }}, O'zbekiston, yangiliklar, axborot">
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Category Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex align-items-center mb-3">
+                <div class="uzbek-pattern-accent me-3"></div>
+                <h1 class="display-5 mb-0 text-uzbek-blue">{{ category_name }}</h1>
+            </div>
+            <p class="lead text-muted">{{ category_name }} sohasidagi eng muhim yangiliklar va tahlillar</p>
+        </div>
+    </div>
+
+    <!-- Posts Grid -->
+    {% if posts %}
+    <div class="row">
+        {% for post in posts %}
+        <div class="col-lg-6 col-xl-4 mb-4">
+            <div class="card h-100 shadow-sm border-0 post-card">
+                {% if post.image_url %}
+                <img src="{{ post.image_url }}" class="card-img-top" alt="{{ post.title_uz }}" style="height: 200px; object-fit: cover;">
+                {% endif %}
+                <div class="card-body d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <span class="badge bg-uzbek-blue">{{ post.category }}</span>
+                        <small class="text-muted">
+                            <i class="fas fa-calendar"></i> 
+                            {{ post.created_at.strftime('%d-%b, %H:%M') }}
+                        </small>
+                    </div>
+                    <h5 class="card-title">
+                        <a href="{{ url_for('post_detail', slug=post.slug) }}" class="text-decoration-none">
+                            {{ post.title_uz }}
+                        </a>
+                    </h5>
+                    <p class="card-text text-muted flex-grow-1">
+                        {{ create_excerpt(post.content_uz, 120) }}
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center mt-auto">
+                        <div class="d-flex gap-3 text-muted small">
+                            <span><i class="fas fa-eye"></i> {{ post.views }}</span>
+                            {% if post.telegram_views > 0 %}
+                            <span><i class="fab fa-telegram"></i> {{ post.telegram_views }}</span>
+                            {% endif %}
+                        </div>
+                        <a href="{{ url_for('post_detail', slug=post.slug) }}" class="btn btn-outline-primary btn-sm">
+                            Batafsil <i class="fas fa-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if posts.pages > 1 %}
+    <nav aria-label="Sahifa navigatsiyasi">
+        <ul class="pagination justify-content-center">
+            {% if posts.has_prev %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('category', name=category_name, page=posts.prev_num) }}">
+                    <i class="fas fa-chevron-left"></i> Oldingi
+                </a>
+            </li>
+            {% endif %}
+
+            {% for page_num in posts.iter_pages() %}
+                {% if page_num %}
+                    {% if page_num != posts.page %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('category', name=category_name, page=page_num) }}">{{ page_num }}</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item active">
+                        <span class="page-link">{{ page_num }}</span>
+                    </li>
+                    {% endif %}
+                {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">...</span>
+                </li>
+                {% endif %}
+            {% endfor %}
+
+            {% if posts.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="{{ url_for('category', name=category_name, page=posts.next_num) }}">
+                    Keyingi <i class="fas fa-chevron-right"></i>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+
+    {% else %}
+    <div class="text-center py-5">
+        <div class="empty-state">
+            <i class="fas fa-newspaper fa-4x text-muted mb-3"></i>
+            <h3 class="text-muted">Hozircha yangilik yo'q</h3>
+            <p class="text-muted">{{ category_name }} kategoriyasida hali yangiliklar mavjud emas.</p>
+            <a href="{{ url_for('index') }}" class="btn btn-uzbek-blue">
+                <i class="fas fa-home"></i> Bosh sahifa
+            </a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
