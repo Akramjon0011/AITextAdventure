@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block title %}Yangi maqola yaratish - {{ config.SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header bg-uzbek-blue text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-plus-circle"></i> Yangi maqola yaratish
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" class="admin-form">
+                        {{ form.hidden_tag() }}
+                        
+                        <!-- Title fields -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">{{ form.title_uz.label }}</label>
+                                {{ form.title_uz(class="form-control") }}
+                                {% if form.title_uz.errors %}
+                                    <div class="text-danger small">
+                                        {% for error in form.title_uz.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">{{ form.title_ru.label }}</label>
+                                {{ form.title_ru(class="form-control") }}
+                            </div>
+                        </div>
+                        
+                        <!-- Content fields -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">{{ form.content_uz.label }}</label>
+                                {{ form.content_uz(class="form-control", rows="15") }}
+                                {% if form.content_uz.errors %}
+                                    <div class="text-danger small">
+                                        {% for error in form.content_uz.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">{{ form.content_ru.label }}</label>
+                                {{ form.content_ru(class="form-control", rows="15") }}
+                            </div>
+                        </div>
+                        
+                        <!-- Category and Region -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">{{ form.category.label }}</label>
+                                {{ form.category(class="form-select") }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">{{ form.region.label }}</label>
+                                {{ form.region(class="form-select") }}
+                            </div>
+                        </div>
+                        
+                        <!-- Keywords -->
+                        <div class="mb-3">
+                            <label class="form-label">{{ form.keywords.label }}</label>
+                            {{ form.keywords(class="form-control", placeholder="Vergul bilan ajratilgan") }}
+                        </div>
+                        
+                        <!-- Checkboxes -->
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    {{ form.published(class="form-check-input") }}
+                                    <label class="form-check-label" for="{{ form.published.id }}">
+                                        {{ form.published.label.text }}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    {{ form.featured(class="form-check-input") }}
+                                    <label class="form-check-label" for="{{ form.featured.id }}">
+                                        {{ form.featured.label.text }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Submit buttons -->
+                        <div class="d-flex gap-2">
+                            {{ form.submit(class="btn btn-uzbek-blue") }}
+                            <a href="{{ url_for('admin_posts') }}" class="btn btn-outline-secondary">Bekor qilish</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <div class="card shadow mb-4">
+                <div class="card-header bg-uzbek-green text-white">
+                    <h6 class="mb-0">
+                        <i class="fas fa-lightbulb"></i> Maslahatlar
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled small">
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success"></i>
+                            Sarlavha qisqa va qiziqarli bo'lishi kerak
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success"></i>
+                            Mazmun aniq va tushunarli yozing
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success"></i>
+                            Kalit so'zlarni to'g'ri tanlang
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success"></i>
+                            Kategoriyani aniq belgilang
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card shadow">
+                <div class="card-header bg-info text-white">
+                    <h6 class="mb-0">
+                        <i class="fas fa-robot"></i> AI Yordamchi
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <p class="small">AI yordamida kontent yaratish uchun AI Generator bo'limiga o'ting.</p>
+                    <a href="{{ url_for('admin_ai_generator') }}" class="btn btn-info btn-sm w-100">
+                        <i class="fas fa-magic"></i> AI Generator
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

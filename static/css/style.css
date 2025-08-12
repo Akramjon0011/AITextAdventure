@@ -1,0 +1,353 @@
+/* Uzbek Color Scheme */
+:root {
+    --uzbek-blue: #0066cc;
+    --uzbek-white: #ffffff;
+    --uzbek-green: #00cc66;
+    --uzbek-red: #cc0000;
+    --uzbek-light-blue: #e6f3ff;
+    --uzbek-light-green: #e6fff2;
+}
+
+/* Custom Bootstrap Colors */
+.bg-uzbek-blue {
+    background-color: var(--uzbek-blue) !important;
+}
+
+.bg-uzbek-green {
+    background-color: var(--uzbek-green) !important;
+}
+
+.bg-uzbek-white {
+    background-color: var(--uzbek-white) !important;
+}
+
+.text-uzbek-blue {
+    color: var(--uzbek-blue) !important;
+}
+
+.text-uzbek-green {
+    color: var(--uzbek-green) !important;
+}
+
+.btn-uzbek-blue {
+    background-color: var(--uzbek-blue);
+    border-color: var(--uzbek-blue);
+    color: white;
+}
+
+.btn-uzbek-blue:hover {
+    background-color: #0052a3;
+    border-color: #0052a3;
+    color: white;
+}
+
+.btn-uzbek-green {
+    background-color: var(--uzbek-green);
+    border-color: var(--uzbek-green);
+    color: white;
+}
+
+.btn-uzbek-green:hover {
+    background-color: #00a352;
+    border-color: #00a352;
+    color: white;
+}
+
+.btn-uzbek-white {
+    background-color: var(--uzbek-white);
+    border-color: var(--uzbek-white);
+    color: var(--uzbek-blue);
+}
+
+.btn-uzbek-white:hover {
+    background-color: #f8f9fa;
+    border-color: #f8f9fa;
+    color: var(--uzbek-blue);
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, var(--uzbek-blue) 0%, #0052a3 100%);
+    position: relative;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 300"><path d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1008,160,1032,176L1056,192L1056,0L1008,0C960,0,864,0,768,0C672,0,576,0,480,0C384,0,288,0,192,0C96,0,48,0,24,0L0,0Z" fill="rgba(255,255,255,0.1)"/></svg>') no-repeat bottom;
+    background-size: 100% 100px;
+}
+
+/* Navigation */
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: #ffd700 !important;
+    transform: translateY(-1px);
+    transition: all 0.3s ease;
+}
+
+.navbar-brand:hover {
+    transform: scale(1.05);
+    transition: all 0.3s ease;
+}
+
+/* Cards */
+.card {
+    border: none;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.category-card {
+    border: 2px solid transparent;
+    background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+}
+
+.category-card:hover {
+    border-color: var(--uzbek-blue);
+    background: linear-gradient(145deg, var(--uzbek-light-blue), #f8f9fa);
+}
+
+/* Content Styling */
+.content-body {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #333;
+}
+
+.content-body p {
+    margin-bottom: 1.5rem;
+}
+
+.content-body h2, .content-body h3, .content-body h4 {
+    color: var(--uzbek-blue);
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.content-body blockquote {
+    border-left: 4px solid var(--uzbek-green);
+    padding-left: 1rem;
+    margin: 2rem 0;
+    font-style: italic;
+    background: var(--uzbek-light-green);
+    padding: 1rem;
+    border-radius: 0 10px 10px 0;
+}
+
+/* Badges */
+.badge {
+    font-size: 0.85rem;
+    padding: 0.5em 0.8em;
+}
+
+/* Timeline */
+.timeline {
+    position: relative;
+    padding-left: 2rem;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 0.5rem;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--uzbek-blue);
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2rem;
+    top: 0.5rem;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--uzbek-green);
+    border: 2px solid white;
+    box-shadow: 0 0 0 2px var(--uzbek-blue);
+}
+
+/* Admin Panel Styles */
+.border-left-uzbek-blue {
+    border-left: 4px solid var(--uzbek-blue) !important;
+}
+
+.border-left-uzbek-green {
+    border-left: 4px solid var(--uzbek-green) !important;
+}
+
+/* Search Results */
+.search-highlight {
+    background-color: #fff3cd;
+    padding: 0.1em 0.2em;
+    border-radius: 0.2em;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 2rem 0;
+    }
+    
+    .hero-section h1 {
+        font-size: 2rem;
+    }
+    
+    .content-body {
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+    
+    .navbar-brand {
+        font-size: 1.1rem;
+    }
+}
+
+/* Loading animations */
+.loading {
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--uzbek-blue);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #0052a3;
+}
+
+/* Print styles */
+@media print {
+    .navbar, .footer, .btn, .card-header {
+        display: none !important;
+    }
+    
+    .card {
+        border: 1px solid #ddd !important;
+        box-shadow: none !important;
+    }
+}
+
+/* Accessibility */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    background: var(--uzbek-blue);
+    color: white;
+    padding: 8px;
+    text-decoration: none;
+    z-index: 100;
+}
+
+.skip-link:focus {
+    top: 6px;
+}
+
+/* Focus styles */
+.btn:focus,
+.form-control:focus {
+    box-shadow: 0 0 0 0.2rem rgba(0, 102, 204, 0.25);
+}
+
+/* Language toggle */
+.language-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+/* Weather widget (if implemented) */
+.weather-widget {
+    background: linear-gradient(135deg, #74b9ff, #0984e3);
+    color: white;
+    border-radius: 10px;
+    padding: 1rem;
+}
+
+/* Currency widget (if implemented) */
+.currency-widget {
+    background: linear-gradient(135deg, var(--uzbek-green), #00a352);
+    color: white;
+    border-radius: 10px;
+    padding: 1rem;
+}
+
+/* Social share buttons */
+.social-share .btn {
+    margin: 0.2rem;
+    border-radius: 50px;
+    padding: 0.5rem 1rem;
+}
+
+/* Tag cloud (if implemented) */
+.tag-cloud {
+    text-align: center;
+}
+
+.tag-cloud .badge {
+    margin: 0.25rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.tag-cloud .badge:hover {
+    transform: scale(1.1);
+}
+
+/* Breadcrumb styling */
+.breadcrumb {
+    background: transparent;
+    padding: 0;
+    margin-bottom: 1rem;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    content: "›";
+    color: var(--uzbek-blue);
+    font-weight: bold;
+}
+
+/* Footer */
+footer {
+    background: linear-gradient(135deg, var(--uzbek-green) 0%, #00a352 100%);
+}
+
+footer a:hover {
+    color: white !important;
+    text-decoration: underline;
+}

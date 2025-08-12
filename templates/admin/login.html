@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block title %}Admin kirish - {{ config.SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center py-5">
+        <div class="col-lg-6 col-md-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-uzbek-blue text-white text-center py-4">
+                    <h4 class="mb-0">
+                        <i class="fas fa-shield-alt"></i> Administrator paneli
+                    </h4>
+                    <p class="mb-0 small">{{ config.SITE_NAME }}</p>
+                </div>
+                <div class="card-body p-5">
+                    <!-- Login Form -->
+                    <form method="POST">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="mb-4">
+                            <label for="username" class="form-label fw-bold">
+                                <i class="fas fa-user"></i> Foydalanuvchi nomi
+                            </label>
+                            {{ form.username(class="form-control form-control-lg", placeholder="Foydalanuvchi nomingizni kiriting") }}
+                            {% if form.username.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in form.username.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="password" class="form-label fw-bold">
+                                <i class="fas fa-lock"></i> Parol
+                            </label>
+                            {{ form.password(class="form-control form-control-lg", placeholder="Parolingizni kiriting") }}
+                            {% if form.password.errors %}
+                                <div class="text-danger mt-1">
+                                    {% for error in form.password.errors %}
+                                        <small>{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="form-check">
+                                {{ form.remember_me(class="form-check-input") }}
+                                <label class="form-check-label" for="remember_me">
+                                    Meni eslab qol
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="d-grid">
+                            {{ form.submit(class="btn btn-uzbek-blue btn-lg") }}
+                        </div>
+                    </form>
+
+                    <!-- Divider -->
+                    <hr class="my-4">
+
+                    <!-- Additional Info -->
+                    <div class="text-center">
+                        <small class="text-muted">
+                            <i class="fas fa-info-circle"></i>
+                            Faqat administrator tizimga kirishi mumkin
+                        </small>
+                    </div>
+                </div>
+                
+                <!-- Footer -->
+                <div class="card-footer bg-light text-center">
+                    <small class="text-muted">
+                        <i class="fas fa-copyright"></i> 
+                        {{ moment().format('YYYY') }} {{ config.SITE_NAME }}. Barcha huquqlar himoyalangan.
+                    </small>
+                </div>
+            </div>
+
+            <!-- Demo Credentials (for development) -->
+            {% if config.DEBUG %}
+            <div class="alert alert-info mt-3">
+                <i class="fas fa-info-circle"></i>
+                <strong>Demo hisobi:</strong> 
+                <br>Foydalanuvchi: admin
+                <br>Parol: admin123
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+.card {
+    border-radius: 15px;
+}
+
+.card-header {
+    border-radius: 15px 15px 0 0 !important;
+}
+
+.form-control-lg {
+    border-radius: 10px;
+}
+
+.btn-lg {
+    border-radius: 10px;
+    padding: 12px;
+}
+
+.border-left-uzbek-blue {
+    border-left: 4px solid #0066cc;
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Focus on username field
+    document.getElementById('username').focus();
+    
+    // Add loading state to submit button
+    const form = document.querySelector('form');
+    const submitBtn = document.querySelector('input[type="submit"]');
+    
+    form.addEventListener('submit', function() {
+        submitBtn.value = 'Kirish...';
+        submitBtn.disabled = true;
+    });
+});
+</script>
+{% endblock %}

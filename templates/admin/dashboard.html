@@ -1,0 +1,271 @@
+{% extends "base.html" %}
+
+{% block title %}Boshqaruv paneli - {{ config.SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="h3 mb-0">
+                    <i class="fas fa-tachometer-alt text-uzbek-blue"></i> Boshqaruv paneli
+                </h1>
+                <div>
+                    <span class="text-muted">Xush kelibsiz, {{ current_user.username }}!</span>
+                    <a href="{{ url_for('admin_logout') }}" class="btn btn-outline-danger btn-sm ms-2">
+                        <i class="fas fa-sign-out-alt"></i> Chiqish
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-uzbek-blue shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-uzbek-blue text-uppercase mb-1">
+                                Jami maqolalar
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ stats.total_posts or 0 }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-newspaper fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-uzbek-green shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-uzbek-green text-uppercase mb-1">
+                                Nashr etilgan
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ stats.published_posts or 0 }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-check-circle fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Jami ko'rishlar
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ stats.total_views or 0 }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-eye fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Telegram jo'natildi
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ stats.telegram_sent or 0 }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fab fa-telegram fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header bg-uzbek-blue text-white">
+                    <h6 class="m-0 font-weight-bold">
+                        <i class="fas fa-bolt"></i> Tezkor amallar
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <a href="{{ url_for('admin_create_post') }}" class="btn btn-uzbek-blue w-100">
+                                <i class="fas fa-plus-circle"></i><br>
+                                <small>Yangi maqola</small>
+                            </a>
+                        </div>
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <a href="{{ url_for('admin_ai_generator') }}" class="btn btn-uzbek-green w-100">
+                                <i class="fas fa-robot"></i><br>
+                                <small>AI Generator</small>
+                            </a>
+                        </div>
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <a href="{{ url_for('admin_posts') }}" class="btn btn-info w-100">
+                                <i class="fas fa-list"></i><br>
+                                <small>Maqolalar</small>
+                            </a>
+                        </div>
+                        <div class="col-lg-3 col-md-6 mb-3">
+                            <a href="{{ url_for('admin_telegram') }}" class="btn btn-warning w-100">
+                                <i class="fab fa-telegram"></i><br>
+                                <small>Telegram</small>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Posts and Activities -->
+    <div class="row">
+        <!-- Recent Posts -->
+        <div class="col-lg-8 mb-4">
+            <div class="card shadow">
+                <div class="card-header bg-light">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-newspaper"></i> So'nggi maqolalar
+                    </h6>
+                </div>
+                <div class="card-body">
+                    {% if recent_posts %}
+                    <div class="table-responsive">
+                        <table class="table table-borderless">
+                            <thead>
+                                <tr>
+                                    <th>Sarlavha</th>
+                                    <th>Kategoriya</th>
+                                    <th>Ko'rishlar</th>
+                                    <th>Holati</th>
+                                    <th>Amallar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for post in recent_posts %}
+                                <tr>
+                                    <td>
+                                        <div class="font-weight-bold">{{ post.title_uz[:50] }}...</div>
+                                        <small class="text-muted">
+                                            {{ post.created_at.strftime('%d-%b %H:%M') }}
+                                        </small>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-secondary">{{ post.category }}</span>
+                                    </td>
+                                    <td>
+                                        <i class="fas fa-eye text-muted"></i> {{ post.views }}
+                                    </td>
+                                    <td>
+                                        {% if post.published %}
+                                            <span class="badge bg-success">Nashr etilgan</span>
+                                        {% else %}
+                                            <span class="badge bg-warning">Qoralama</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="{{ url_for('post_detail', slug=post.slug) }}" 
+                                               class="btn btn-outline-primary btn-sm" target="_blank">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a href="{{ url_for('admin_edit_post', id=post.id) }}" 
+                                               class="btn btn-outline-secondary btn-sm">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-newspaper fa-3x text-muted mb-3"></i>
+                        <p class="text-muted">Hech qanday maqola mavjud emas.</p>
+                        <a href="{{ url_for('admin_create_post') }}" class="btn btn-uzbek-blue">
+                            <i class="fas fa-plus"></i> Birinchi maqolani yarating
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Activity Feed -->
+        <div class="col-lg-4 mb-4">
+            <div class="card shadow">
+                <div class="card-header bg-light">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-bell"></i> So'nggi harakatlar
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="timeline">
+                        <!-- Timeline items would go here -->
+                        <div class="text-center py-4">
+                            <i class="fas fa-clock fa-3x text-muted mb-3"></i>
+                            <p class="text-muted small">Harakatlar tarixi bo'sh.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Status -->
+            <div class="card shadow mt-4">
+                <div class="card-header bg-light">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-server"></i> Tizim holati
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-6">
+                            <div class="mb-2">
+                                <i class="fas fa-robot fa-2x {% if gemini_status %}text-success{% else %}text-danger{% endif %}"></i>
+                            </div>
+                            <small class="text-muted">AI (Gemini)</small>
+                            <div>
+                                <span class="badge {% if gemini_status %}bg-success{% else %}bg-danger{% endif %}">
+                                    {% if gemini_status %}Ishlayapti{% else %}Xato{% endif %}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-2">
+                                <i class="fab fa-telegram fa-2x {% if telegram_status %}text-success{% else %}text-danger{% endif %}"></i>
+                            </div>
+                            <small class="text-muted">Telegram</small>
+                            <div>
+                                <span class="badge {% if telegram_status %}bg-success{% else %}bg-danger{% endif %}">
+                                    {% if telegram_status %}Ishlayapti{% else %}Xato{% endif %}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

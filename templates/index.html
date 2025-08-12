@@ -1,0 +1,225 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section bg-uzbek-blue text-white py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="display-4 fw-bold mb-3">Eng so'nggi yangiliklar</h1>
+                <p class="lead mb-4">O'zbekiston va Markaziy Osiyodagi eng muhim yangiliklarni AI yordamida taqdim etamiz</p>
+                <a href="{{ url_for('category', name='O\'zbekiston yangiliklar') }}" class="btn btn-uzbek-white btn-lg">
+                    <i class="fas fa-newspaper"></i> Yangiliklarni ko'rish
+                </a>
+            </div>
+            <div class="col-lg-4">
+                <div class="text-center">
+                    <i class="fas fa-globe fa-5x opacity-50"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured News -->
+{% if featured_posts %}
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-4">
+            <i class="fas fa-star text-warning"></i> Asosiy yangiliklar
+        </h2>
+        <div class="row">
+            {% for post in featured_posts %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <span class="badge bg-uzbek-blue">{{ post.category }}</span>
+                            <small class="text-muted">
+                                <i class="fas fa-calendar"></i> 
+                                {{ post.created_at.strftime('%d-%b, %H:%M') }}
+                            </small>
+                        </div>
+                        <h5 class="card-title">
+                            <a href="{{ url_for('post_detail', slug=post.slug) }}" class="text-decoration-none">
+                                {% if session.get('language') == 'ru' and post.title_ru %}
+                                    {{ post.title_ru }}
+                                {% else %}
+                                    {{ post.title_uz }}
+                                {% endif %}
+                            </a>
+                        </h5>
+                        <p class="card-text">
+                            {% if session.get('language') == 'ru' and post.content_ru %}
+                                {{ post.content_ru[:150] }}...
+                            {% else %}
+                                {{ post.content_uz[:150] }}...
+                            {% endif %}
+                        </p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                <i class="fas fa-eye"></i> {{ post.views }}
+                            </small>
+                            {% if post.region %}
+                            <span class="badge bg-uzbek-green">{{ post.region }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Categories Section -->
+<section class="bg-light py-5">
+    <div class="container">
+        <h2 class="text-center mb-4">
+            <i class="fas fa-th-large"></i> Kategoriyalar
+        </h2>
+        <div class="row">
+            {% for category in config.UZBEK_CATEGORIES %}
+            <div class="col-md-6 col-lg-3 mb-3">
+                <a href="{{ url_for('category', name=category) }}" class="text-decoration-none">
+                    <div class="card category-card h-100 text-center">
+                        <div class="card-body">
+                            <div class="mb-3">
+                                {% if category == "O'zbekiston yangiliklar" %}
+                                    <i class="fas fa-flag fa-2x text-uzbek-blue"></i>
+                                {% elif category == "Texnologiya" %}
+                                    <i class="fas fa-microchip fa-2x text-uzbek-blue"></i>
+                                {% elif category == "Sport" %}
+                                    <i class="fas fa-futbol fa-2x text-uzbek-blue"></i>
+                                {% elif category == "Iqtisodiyot" %}
+                                    <i class="fas fa-chart-line fa-2x text-uzbek-blue"></i>
+                                {% else %}
+                                    <i class="fas fa-newspaper fa-2x text-uzbek-blue"></i>
+                                {% endif %}
+                            </div>
+                            <h6 class="card-title mb-0">{{ category }}</h6>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Recent News -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <h3 class="mb-4">
+                    <i class="fas fa-clock"></i> So'nggi yangiliklar
+                </h3>
+                {% if recent_posts %}
+                <div class="row">
+                    {% for post in recent_posts %}
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <span class="badge bg-secondary">{{ post.category }}</span>
+                                    <small class="text-muted">
+                                        {{ post.created_at.strftime('%d-%b %H:%M') }}
+                                    </small>
+                                </div>
+                                <h6 class="card-title">
+                                    <a href="{{ url_for('post_detail', slug=post.slug) }}" class="text-decoration-none">
+                                        {% if session.get('language') == 'ru' and post.title_ru %}
+                                            {{ post.title_ru }}
+                                        {% else %}
+                                            {{ post.title_uz }}
+                                        {% endif %}
+                                    </a>
+                                </h6>
+                                <p class="card-text small">
+                                    {% if session.get('language') == 'ru' and post.content_ru %}
+                                        {{ post.content_ru[:100] }}...
+                                    {% else %}
+                                        {{ post.content_uz[:100] }}...
+                                    {% endif %}
+                                </p>
+                                <div class="d-flex justify-content-between">
+                                    <small class="text-muted">
+                                        <i class="fas fa-eye"></i> {{ post.views }}
+                                    </small>
+                                    {% if post.region %}
+                                    <span class="badge bg-uzbek-green small">{{ post.region }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-4">
+                    <i class="fas fa-newspaper fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">Hozircha yangiliklar mavjud emas.</p>
+                </div>
+                {% endif %}
+            </div>
+            
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <!-- Popular Posts -->
+                <div class="card mb-4">
+                    <div class="card-header bg-uzbek-blue text-white">
+                        <h6 class="mb-0">
+                            <i class="fas fa-fire"></i> Ommabop maqolalar
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        {% if popular_posts %}
+                        {% for post in popular_posts %}
+                        <div class="d-flex mb-3 {% if not loop.last %}border-bottom pb-3{% endif %}">
+                            <div class="flex-shrink-0">
+                                <span class="badge bg-uzbek-blue">{{ loop.index }}</span>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h6 class="mb-1">
+                                    <a href="{{ url_for('post_detail', slug=post.slug) }}" class="text-decoration-none">
+                                        {{ post.title_uz[:50] }}...
+                                    </a>
+                                </h6>
+                                <small class="text-muted">
+                                    <i class="fas fa-eye"></i> {{ post.views }}
+                                </small>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% else %}
+                        <p class="text-muted small">Ommabop maqolalar mavjud emas.</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Newsletter -->
+                <div class="card mb-4">
+                    <div class="card-header bg-uzbek-green text-white">
+                        <h6 class="mb-0">
+                            <i class="fas fa-envelope"></i> Yangiliklardan xabardor bo'ling
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text small">Eng muhim yangiliklarni birinchilardan bo'lib oling!</p>
+                        <form>
+                            <div class="mb-3">
+                                <input type="email" class="form-control" placeholder="Email manzilingiz">
+                            </div>
+                            <button type="submit" class="btn btn-uzbek-green w-100">
+                                <i class="fas fa-bell"></i> Obuna bo'lish
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

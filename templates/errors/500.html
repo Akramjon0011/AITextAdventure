@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Ichki xatolik - {{ config.SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 text-center">
+            <div class="error-page">
+                <h1 class="display-1 text-warning fw-bold">500</h1>
+                <h2 class="mb-4">Ichki server xatoligi</h2>
+                <p class="lead mb-4">Kechirasiz, serverda muammo yuz berdi. Iltimos, biroz kutib yana urinib ko'ring.</p>
+                <div class="d-flex gap-2 justify-content-center">
+                    <a href="{{ url_for('index') }}" class="btn btn-uzbek-blue">
+                        <i class="fas fa-home"></i> Bosh sahifa
+                    </a>
+                    <a href="javascript:history.back()" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left"></i> Orqaga
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

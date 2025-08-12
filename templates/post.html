@@ -1,0 +1,247 @@
+{% extends "base.html" %}
+
+{% block title %}
+{% if session.get('language') == 'ru' and post.title_ru %}
+    {{ post.title_ru }} - {{ config.SITE_NAME }}
+{% else %}
+    {{ post.title_uz }} - {{ config.SITE_NAME }}
+{% endif %}
+{% endblock %}
+
+{% block description %}
+{% if post.meta_description_uz %}
+    {{ post.meta_description_uz }}
+{% else %}
+    {% if session.get('language') == 'ru' and post.content_ru %}
+        {{ post.content_ru[:155] }}
+    {% else %}
+        {{ post.content_uz[:155] }}
+    {% endif %}
+{% endif %}
+{% endblock %}
+
+{% block keywords %}{{ post.keywords }}{% endblock %}
+
+{% block og_title %}
+{% if session.get('language') == 'ru' and post.title_ru %}
+    {{ post.title_ru }}
+{% else %}
+    {{ post.title_uz }}
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Article Header -->
+            <div class="mb-4">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="{{ url_for('index') }}">Bosh sahifa</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{{ url_for('category', name=post.category) }}">{{ post.category }}</a>
+                        </li>
+                        <li class="breadcrumb-item active">Maqola</li>
+                    </ol>
+                </nav>
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="badge bg-uzbek-blue fs-6">{{ post.category }}</span>
+                    {% if post.region %}
+                    <span class="badge bg-uzbek-green">{{ post.region }}</span>
+                    {% endif %}
+                </div>
+
+                <h1 class="display-5 fw-bold mb-3">
+                    {% if session.get('language') == 'ru' and post.title_ru %}
+                        {{ post.title_ru }}
+                    {% else %}
+                        {{ post.title_uz }}
+                    {% endif %}
+                </h1>
+
+                <div class="d-flex justify-content-between align-items-center text-muted mb-4">
+                    <div>
+                        <i class="fas fa-calendar"></i>
+                        {{ post.created_at.strftime('%d %B %Y, %H:%M') }}
+                    </div>
+                    <div>
+                        <i class="fas fa-eye"></i> {{ post.views }}
+                        {% if post.telegram_views > 0 %}
+                        <span class="ms-2">
+                            <i class="fab fa-telegram"></i> {{ post.telegram_views }}
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Language Toggle for Article -->
+                {% if post.content_ru %}
+                <div class="mb-4">
+                    <div class="btn-group" role="group">
+                        <a href="{{ url_for('post_detail', slug=post.slug, lang='uz') }}" 
+                           class="btn btn-sm {% if session.get('language') != 'ru' %}btn-uzbek-blue{% else %}btn-outline-secondary{% endif %}">
+                            🇺🇿 O'zbekcha
+                        </a>
+                        <a href="{{ url_for('post_detail', slug=post.slug, lang='ru') }}" 
+                           class="btn btn-sm {% if session.get('language') == 'ru' %}btn-uzbek-blue{% else %}btn-outline-secondary{% endif %}">
+                            🇷🇺 Русский
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Article Content -->
+            <article class="mb-5">
+                <div class="content-body">
+                    {% if session.get('language') == 'ru' and post.content_ru %}
+                        {{ post.content_ru | safe }}
+                    {% else %}
+                        {{ post.content_uz | safe }}
+                    {% endif %}
+                </div>
+            </article>
+
+            <!-- Social Share -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h6 class="card-title">
+                        <i class="fas fa-share-alt"></i> Ulashish
+                    </h6>
+                    <div class="d-flex gap-2">
+                        <a href="https://t.me/share/url?url={{ request.url }}&text={{ post.title_uz }}" 
+                           target="_blank" class="btn btn-info btn-sm">
+                            <i class="fab fa-telegram"></i> Telegram
+                        </a>
+                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.url }}" 
+                           target="_blank" class="btn btn-primary btn-sm">
+                            <i class="fab fa-facebook"></i> Facebook
+                        </a>
+                        <a href="https://twitter.com/intent/tweet?url={{ request.url }}&text={{ post.title_uz }}" 
+                           target="_blank" class="btn btn-dark btn-sm">
+                            <i class="fab fa-twitter"></i> Twitter
+                        </a>
+                        <button class="btn btn-secondary btn-sm" onclick="copyToClipboard()">
+                            <i class="fas fa-copy"></i> Nusxa olish
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Related Posts -->
+            {% if related_posts %}
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="fas fa-newspaper"></i> O'xshash yangiliklar
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for related_post in related_posts %}
+                        <div class="col-md-6 mb-3">
+                            <h6>
+                                <a href="{{ url_for('post_detail', slug=related_post.slug) }}" class="text-decoration-none">
+                                    {{ related_post.title_uz[:60] }}...
+                                </a>
+                            </h6>
+                            <small class="text-muted">
+                                <i class="fas fa-calendar"></i> 
+                                {{ related_post.created_at.strftime('%d-%b') }}
+                                <span class="ms-2">
+                                    <i class="fas fa-eye"></i> {{ related_post.views }}
+                                </span>
+                            </small>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Popular Posts -->
+            <div class="card mb-4">
+                <div class="card-header bg-uzbek-blue text-white">
+                    <h6 class="mb-0">
+                        <i class="fas fa-fire"></i> Ommabop yangiliklar
+                    </h6>
+                </div>
+                <div class="card-body">
+                    {% if popular_posts %}
+                    {% for popular_post in popular_posts %}
+                    <div class="d-flex mb-3 {% if not loop.last %}border-bottom pb-3{% endif %}">
+                        <div class="flex-shrink-0">
+                            <span class="badge bg-uzbek-blue">{{ loop.index }}</span>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h6 class="mb-1">
+                                <a href="{{ url_for('post_detail', slug=popular_post.slug) }}" class="text-decoration-none">
+                                    {{ popular_post.title_uz[:50] }}...
+                                </a>
+                            </h6>
+                            <small class="text-muted">
+                                <i class="fas fa-eye"></i> {{ popular_post.views }}
+                            </small>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <p class="text-muted small">Ommabop maqolalar mavjud emas.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Category Posts -->
+            {% if category_posts %}
+            <div class="card mb-4">
+                <div class="card-header bg-uzbek-green text-white">
+                    <h6 class="mb-0">
+                        <i class="fas fa-tag"></i> {{ post.category }} bo'yicha
+                    </h6>
+                </div>
+                <div class="card-body">
+                    {% for category_post in category_posts %}
+                    <div class="mb-3 {% if not loop.last %}border-bottom pb-3{% endif %}">
+                        <h6 class="mb-1">
+                            <a href="{{ url_for('post_detail', slug=category_post.slug) }}" class="text-decoration-none">
+                                {{ category_post.title_uz[:50] }}...
+                            </a>
+                        </h6>
+                        <small class="text-muted">
+                            {{ category_post.created_at.strftime('%d-%b %H:%M') }}
+                        </small>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Advertisement Space -->
+            <div class="card">
+                <div class="card-body text-center">
+                    <h6 class="text-muted mb-3">Reklama o'rni</h6>
+                    <div class="bg-light p-4 rounded">
+                        <i class="fas fa-ad fa-3x text-muted"></i>
+                        <p class="text-muted small mt-2">Bu yerda reklama bo'lishi mumkin</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function copyToClipboard() {
+    navigator.clipboard.writeText(window.location.href).then(function() {
+        alert('Havola nusxa olindi!');
+    });
+}
+</script>
+{% endblock %}
