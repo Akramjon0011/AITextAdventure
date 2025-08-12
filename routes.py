@@ -197,7 +197,8 @@ def admin_login():
             return redirect(next_page) if next_page else redirect(url_for('admin_dashboard'))
         flash('Noto\'g\'ri foydalanuvchi nomi yoki parol', 'error')
     
-    return render_template('admin/login.html', form=form, config=Config)
+    from datetime import datetime
+    return render_template('admin/login.html', form=form, config=Config, current_year=datetime.now().year)
 
 @app.route('/admin/logout')
 @login_required

@@ -51,16 +51,16 @@ with app.app_context():
     db.create_all()
     
     # Create default admin user if not exists
-    admin = User.query.filter_by(username='admin').first()
+    admin = User.query.filter_by(username='Akramjon').first()
     if not admin:
         admin = User()
-        admin.username = 'admin'
-        admin.email = 'admin@uzbeknews.uz'
+        admin.username = 'Akramjon'
+        admin.email = 'akramjon@uzbeknews.uz'
         admin.is_admin = True
-        admin.set_password('admin123')
+        admin.set_password('Gisobot201415')
         db.session.add(admin)
         db.session.commit()
-        logging.info("Default admin user created: admin/admin123")
+        logging.info("Default admin user created: Akramjon/Gisobot201415")
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
