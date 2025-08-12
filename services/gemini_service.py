@@ -5,7 +5,20 @@ from google.genai import types
 
 class GeminiService:
     def __init__(self):
-        self.client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
+        api_key = os.environ.get("GEMINI_API_KEY")
+        if api_key:
+            try:
+                self.client = genai.Client(api_key=api_key)
+                self.available = True
+            except Exception as e:
+                logging.warning(f"Failed to initialize Gemini client: {e}")
+                self.client = None
+                self.available = False
+        else:
+            logging.warning("GEMINI_API_KEY not found. Gemini service will be disabled.")
+            self.client = None
+            self.available = False
+        
         self.model = "gemini-2.5-flash"
         
         # Uzbek content prompts
@@ -69,6 +82,10 @@ class GeminiService:
     
     def generate_uzbek_news(self, topic, keywords=""):
         """Generate news article in Uzbek language"""
+        if not self.available:
+            logging.error("Gemini service not available. Please set GEMINI_API_KEY environment variable.")
+            return None
+            
         try:
             prompt = self.UZBEK_NEWS_PROMPT.format(topic=topic, keywords=keywords)
             
@@ -92,6 +109,10 @@ class GeminiService:
     
     def generate_telegram_post(self, title, content_preview):
         """Generate Telegram post in Uzbek"""
+        if not self.available:
+            logging.error("Gemini service not available. Please set GEMINI_API_KEY environment variable.")
+            return ""
+            
         try:
             prompt = self.TELEGRAM_UZ_PROMPT.format(
                 title=title,
@@ -111,6 +132,10 @@ class GeminiService:
     
     def translate_to_russian(self, title_uz, content_uz):
         """Translate Uzbek content to Russian"""
+        if not self.available:
+            logging.error("Gemini service not available. Please set GEMINI_API_KEY environment variable.")
+            return None
+            
         try:
             prompt = self.RUSSIAN_TRANSLATION_PROMPT.format(
                 title_uz=title_uz,
@@ -137,6 +162,10 @@ class GeminiService:
     
     def summarize_content(self, content, language="uz"):
         """Summarize content for preview"""
+        if not self.available:
+            logging.error("Gemini service not available. Please set GEMINI_API_KEY environment variable.")
+            return content[:200]
+            
         try:
             if language == "uz":
                 prompt = f"Quyidagi matnni qisqacha xulosalang (100-150 so'z): {content[:500]}"
@@ -156,6 +185,10 @@ class GeminiService:
     
     def generate_news_content(self, topic, category, region):
         """Generate comprehensive news content based on topic"""
+        if not self.available:
+            logging.error("Gemini service not available. Please set GEMINI_API_KEY environment variable.")
+            return None
+            
         try:
             prompt = f"""
             Quyidagi mavzu bo'yicha haqiqiy va dolzarb yangilik maqolasi yarating:

@@ -23,4 +23,5 @@ dependencies = [
     "python-slugify>=8.0.4",
     "bcrypt>=4.3.0",
     "python-telegram-bot>=22.3",
+    "wtforms>=3.2.1",
 ]

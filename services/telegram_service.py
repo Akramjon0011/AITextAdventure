@@ -10,12 +10,25 @@ class TelegramService:
     def __init__(self):
         self.bot_token = os.environ.get('TELEGRAM_BOT_TOKEN')
         self.channel_id = os.environ.get('TELEGRAM_CHANNEL_ID')
-        self.bot = Bot(token=self.bot_token) if self.bot_token else None
+        
+        if self.bot_token:
+            try:
+                self.bot = Bot(token=self.bot_token)
+                self.available = True
+            except Exception as e:
+                logging.warning(f"Failed to initialize Telegram bot: {e}")
+                self.bot = None
+                self.available = False
+        else:
+            logging.warning("TELEGRAM_BOT_TOKEN not found. Telegram service will be disabled.")
+            self.bot = None
+            self.available = False
+            
         self.tashkent_tz = pytz.timezone('Asia/Tashkent')
     
     async def send_news_post(self, post, base_url="http://localhost:5000"):
         """Send news post to Telegram channel"""
-        if not self.bot or not self.channel_id:
+        if not self.available or not self.bot or not self.channel_id:
             logging.error("Telegram bot or channel not configured")
             return False
         
